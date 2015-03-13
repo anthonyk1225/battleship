@@ -13,9 +13,12 @@ class View:
 		player_two = input("Enter Player 2 name:  ")
 		return player_two
 
+	def show_open_sea(self, name):
+		print("Okay, {}, let's deploy your armada!  Here is your sea to hide in.".format(name))
+
 	def select_ship(self):
-		ship_choice = input('''Let's place your ship! What would you like to use?
-		Please press 5 for Aircraft carrier(5 slots)
+		ship_choice = input('''Now, pick your ship.
+		5 for Aircraft carrier(5 slots)
 		4 for Battleship (4 slots)
 		3 for Submarine (3 slots)
 		2 for Patrol Boat (2 slots)
