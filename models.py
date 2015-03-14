@@ -1,23 +1,5 @@
 import sqlite3
 
-# class Gameboard:
-# 	def __init__(self):
-# 		self.board = []
-#
-# 	def print_board(self):
-# 		lst = []
-# 		for x in range(11):
-# 			arr = []
-# 			for y in range(11):
-# 				if x*y > 0:
-# 					arr.append('~')
-# 			if x == 0:
-# 				arr.append([a for a in range(1,11)])
-# 			lst.append(arr)
-# 		return lst
-
-
-
 class Gameboard:
 	def __init__(self):
 		self.board = []
@@ -27,7 +9,6 @@ class Gameboard:
 		for y in range(11):
 			lst = []
 			letter = chr(64 + y)
-		# print('   ', '    '.join([(str(x) + " ") for x in range(1,11)]))
 			for x in range(11):
 				if x * y > 0:
 					lst.append(" ~")
@@ -53,11 +34,22 @@ class Player:
 		self.name = name
 		self.board = Gameboard()
 
+	def fire_missle(self, coords):
+		self.coords = coords
+		if self.coords = Ship.start_coords or self.coords = ship.end_coords
+			return True
+
+
+
 class Ship:
 	def __init__(self, length, starting_point, position):
 		self.length = length
 		self.starting_point = starting_point
 		self.position = position
+
+	def place_ship(self, start_coords, end_coords):
+		self.start_cords = start_coords
+		self.end_coords = end_cords
 
 board = Gameboard()
 board.seed_board()

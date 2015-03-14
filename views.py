@@ -1,3 +1,5 @@
+
+
 class View:
 	def __init__(self):
 		pass
@@ -36,3 +38,22 @@ class View:
 		starting_point = input('''Please select a coordinate to place your ship
 		Selection: ''')
 		return starting_point
+
+	def attack_opponent(self):
+		attack_locale_y = input('''Where would you like to launch a torpedo?
+		Pick a letter (A-J): ''')  #get letter value
+		attack_locale_x = input('''Pick a number(1-10):
+		(letter, number):''')  # get number value
+		print(attack_locale_y, attack_locale_x)
+		return ord(attack_locale_y), eval(attack_locale_x)
+
+	def attack_missed(self):
+		print("Sorry, you missed.  Next turn!")
+
+	def hit_scored(self):
+		print("Direct hit!")
+
+	def game_over(self):
+		print("You sunk your opponent's ship!  Congratulations, you won!")
+
+print(View().attack_opponent())
