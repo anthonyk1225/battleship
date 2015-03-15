@@ -1,8 +1,13 @@
-
-
 class View:
 	def __init__(self):
 		pass
+
+	def game_mode(self):
+		game_type = input('''What game mode would you like to play?
+		press 1 for 2 player mode
+		press 2 to test your wits against the computer!
+		Selection: ''')
+		return game_type
 
 	def welcome(self):
 		print ("Welcome to Battleship!!!!!  Hope you brought a life-jacket?")
@@ -15,12 +20,9 @@ class View:
 		player_two = input("Enter Player 2 name:  ")
 		return player_two
 
-	def show_open_sea(self, name):
-		print("Okay, {}, let's deploy your armada!  Here is your sea to hide in.".format(name))
-
 	def select_ship(self):
-		ship_choice = input('''Now, pick your ship.
-		5 for Aircraft carrier(5 slots)
+		ship_choice = input('''Let's place your ship! What would you like to use?
+		Please press 5 for Aircraft carrier(5 slots)
 		4 for Battleship (4 slots)
 		3 for Submarine (3 slots)
 		2 for Patrol Boat (2 slots)
@@ -39,21 +41,20 @@ class View:
 		Selection: ''')
 		return starting_point
 
-	def attack_opponent(self):
-		attack_locale_y = input('''Where would you like to launch a torpedo?
-		Pick a letter (A-J): ''')  #get letter value
-		attack_locale_x = input('''Pick a number(1-10):
-		(letter, number):''')  # get number value
-		print(attack_locale_y, attack_locale_x)
-		return ord(attack_locale_y), eval(attack_locale_x)
+	def fire_shot(self, current_player):
+		shoot = input(current_player + ''' make your move!
+		Please select a coordinate to shoot
+		Selection: ''')
+		return shoot
 
-	def attack_missed(self):
-		print("Sorry, you missed.  Next turn!")
+	def its_a_hit(self):
+		print ("That's a hit!!")
 
-	def hit_scored(self):
-		print("Direct hit!")
+	def its_a_miss(self):
+		print("You've missed the enemy ship..")
 
-	def game_over(self):
-		print("You sunk your opponent's ship!  Congratulations, you won!")
+	def end_game(self,winning_player):
+		print('''Congratulations, ''' + winning_player + '''. You win!!!''')
 
-print(View().attack_opponent())
+	def clear_screen(self):
+		print(chr(27) + "[2J")

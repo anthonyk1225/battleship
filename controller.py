@@ -1,62 +1,90 @@
 from models import *
 from views import *
+import time
 
 class Battleship:
 	def __init__(self):
 		self.view = View()
 		self.board = Gameboard()
+		self.player = Player()
+		self.ship = Ship()
 		self.view.welcome()
-		Battleship().attack_turn()
 
-	def run(self):
-		self.player_one_initialize()
-		self.player_two_initialize()
-		self.player_one_deploy()
-		self.player_two_deploy()
-		self.current = self.player_one
-		self.next = self.player_two
-		self.attack()
+	def main_menu(self):
+		choice = self.view.game_mode()
+		if choice is '1':
+			self.two_player_game()
+		elif choice is '2':
+			self.one_player_game()
 
-	def next_turn(self):
-		swap = self.current
-		self.current = self.next
-		self.next = swap
+	def one_player_game(self):
+		self.player_one_initiate()
+		#computer initialization
 
-	def player_one_initialize(self):
-		player_one_name = self.view.first_player()
-		self.view.show_open_sea(player_one_name)
-		self.player_one = Player(player_one_name)
-		self.player_one.board.print_board()
+	def two_player_game(self):
+		self.player_one_initiate()
+		self.player_two_initiate()
+		self.shots_fired()
 
-	def	player_one_deploy_ship(self):
-		player_one_ship = self.view.select_ship()
-		player_one_position = self.view.select_position()
-		player_one_starting_pointer = self.view.starting_point_of_ship()
-		self.player_one_ship = Ship(player_one_ship, player_one_position, player_one_starting_pointer)
-		self.player_one_ship.place_bow(player_one_starting_pointer)
+	def player_one_initiate(self):
+		player_one_name = self.view.first_player() #player 1 name
+		self.player_one = Player(player_one_name) #instance of class Player
 
-	def player_two_initialize(self):
-		player_two_name = self.view.first_player()
-		self.view.show_open_sea(player_two_name)
+		player_one_ship = int(self.view.select_ship()) #player 1 ship choice (length)
+		player_one_position = self.view.select_position() #player 1 vertical or horizontal
+
+		self.player_one.board.seed_board()
+		self.player_one.board.print_board() #prints the board
+
+		player_one_starting_pointer = self.view.starting_point_of_ship().upper() #player 1 places the ship
+
+		self.player_one_ship = Ship() #setting player one's ship
+		self.player_one.ship_location = self.player_one_ship.create_ship_location(player_one_ship, player_one_position, player_one_starting_pointer)
+
+	def player_two_initiate(self):
+		player_two_name = self.view.second_player()
 		self.player_two = Player(player_two_name)
-		self.player_two.board.print_board()
-		player_two_ship = self.view.select_ship()
+
+		player_two_ship = int(self.view.select_ship())
 		player_two_position = self.view.select_position()
-		player_two_starting_pointer = self.view.starting_point_of_ship()
-		self.player_two_ship = Ship(player_two_ship, player_two_position,player_two_starting_pointer)
 
-	def	player_one_deploy_ship(self):
-		player_one_ship = self.view.select_ship()
-		player_one_position = self.view.select_position()
-		player_one_starting_pointer = self.view.starting_point_of_ship()
-		self.player_one_ship = Ship(player_one_ship, player_one_position, player_one_starting_pointer)
-		self.player_one_ship.place_bow(player_one_starting_pointer)
+		self.player_two.board.seed_board()
+		self.player_two.board.print_board()
 
-	def attack_turn(self):
-		# if player_one_ship == (sunk):   						#very much pseudocode
-		# 	return self.views.game_over()
-		# elif player_two_ship == (sunk):							#more psuedocode
-		# 	return self.views.game_over()
-		# else:
-		attack_coords = self.views.attack_opponent()
-		self.model.fire_missile(attack_coords)
+		player_two_starting_pointer = self.view.starting_point_of_ship().upper() #player 1 places the ship
+
+		self.player_two_ship = Ship() #setting player two's ship
+		self.player_two.ship_location = self.player_two_ship.create_ship_location(player_two_ship, player_two_position, player_two_starting_pointer)
+
+	def shots_fired(self, player = None):
+		self.view.clear_screen()
+		current_player = self.player.switch_current_player(player)
+		enemy_player = self.player.enemy_player(current_player)
+		if current_player == 'player one':
+			actual_current_player = self.player_one
+		else:
+			actual_current_player = self.player_two
+		if enemy_player == 'player one':
+			actual_enemy_player = self.player_one
+		else:
+			actual_enemy_player = self.player_two
+		actual_current_player.board.print_board()
+		shot_fired_at = self.view.fire_shot(actual_current_player.name).upper()
+		a_hit = self.board.hit_or_miss(shot_fired_at, actual_enemy_player.ship_location)
+		actual_current_player.board = self.board.updated_board(shot_fired_at, actual_current_player.board, actual_enemy_player.ship_location)
+		actual_enemy_player.ship_location = self.ship.update_enemy_boat(shot_fired_at,actual_enemy_player.ship_location)
+		if a_hit is True:
+			self.view.its_a_hit()
+		else:
+			self.view.its_a_miss()
+		time.sleep(1)
+		if len(actual_enemy_player.ship_location) == 0:
+			return self.view.end_game(actual_current_player.name)
+		self.shots_fired(current_player)
+
+	def man_v_comp(self):
+		self.view.clear_screen()
+
+
+battleship = Battleship()
+battleship.main_menu()

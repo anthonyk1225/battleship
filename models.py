@@ -23,34 +23,57 @@ class Gameboard:
 		return self.board
 
 	def print_board(self):
-		# self.board[3][7] = ' X'
-		# self.board[3][2] = ' O'
 		for line in self.board:
 			print (('  ').join(line))
 			print()
 
-class Player:
-	def __init__(self, name, board = None):
-		self.name = name
-		self.board = Gameboard()
-
-	def fire_missle(self, coords):
-		self.coords = coords
-		if self.coords = Ship.start_coords or self.coords = ship.end_coords
+	def hit_or_miss(self, player_guess, enemy_boat_location):
+		if player_guess in enemy_boat_location:
 			return True
 
+	def updated_board(self, player_guess, player_board, enemy_boat_location):
+		letter = int(ord(player_guess[0])) - 64
+		if player_guess in enemy_boat_location:
+			player_board.board[letter][int(player_guess[1:3])] = ' O'
+		else:
+			player_board.board[letter][int(player_guess[1:3])] = ' X'
+		return player_board
+
+class Player:
+	def __init__(self, name=None, board = None, ship_location=None):
+		self.name = name
+		self.ship_location = ship_location
+		self.board = Gameboard()
+
+	def switch_current_player(self, player=None):
+		if player == None or player == 'player two':
+			return 'player one'
+		return 'player two'
+
+	def enemy_player(self, current_player):
+		if current_player == 'player one':
+			return 'player two'
+		return 'player one'
 
 
 class Ship:
-	def __init__(self, length, starting_point, position):
-		self.length = length
-		self.starting_point = starting_point
-		self.position = position
+	def __init__(self):
+		pass
 
-	def place_ship(self, start_coords, end_coords):
-		self.start_cords = start_coords
-		self.end_coords = end_cords
+	def create_ship_location(self, length, position, starting_point,):
+		letter = ord(starting_point[0])
+		ship_location = []
+		for i in range(length):
+			new_letter = chr(letter + i)
+			if position == '1': #vertical
+				ship_location.append(new_letter + starting_point[1:3])
+			elif position == '2': #horizontal
+				ship_location.append(starting_point[0] + str(int(starting_point[1:3]) + i))
+		return ship_location
 
-board = Gameboard()
-board.seed_board()
-(board.print_board())
+	def update_enemy_boat(self,player_guess,enemy_boat_location):
+		if player_guess in enemy_boat_location:
+			destroyed = enemy_boat_location.index(player_guess)
+			enemy_boat_location.pop(destroyed)
+			return enemy_boat_location
+		return enemy_boat_location
