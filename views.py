@@ -33,3 +33,9 @@ class View:
 		starting_point = input('''Please select a coordinate to place your ship
 		Selection: ''')
 		return starting_point
+
+	def fire_shot(self, current_player):
+		shoot = input(current_player + ''' make your move!
+		Please select a coordinate to shoot
+		Selection: ''')
+		return shoot

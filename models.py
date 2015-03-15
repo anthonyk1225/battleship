@@ -4,23 +4,66 @@ class Gameboard:
 	def __init__(self):
 		self.board = []
 
+	def seed_board(self):
+		arr = []
+		for y in range(11):
+			lst = []
+			letter = chr(64 + y)
+			for x in range(11):
+				if x * y > 0:
+					lst.append(" ~")
+				elif x == 0 and y == 0:
+					lst.append('')
+				elif x == 0:
+					lst.append(letter)
+				elif y == 0:
+					lst.append(" " + str(y+x))
+			arr.append(lst)
+		self.board = arr
+		return self.board
+
 	def print_board(self):
-		for x in range(10):
-			self.board.append(" ~ "*10)
-		print('   ', '    '.join([(str(x) + " ") for x in range(1,11)]))
-		x = 65
-		for row in self.board:
-			print(chr(x), ' '.join(row))
+		# self.board[3][7] = ' X'
+		# self.board[3][2] = ' O'
+		for line in self.board:
+			print (('  ').join(line))
 			print()
-			x+=1
+
+	def updated_board(self, player_guess, player_board, enemy_boat_location):
+		letter = int(ord(player_guess[0])) - 64
+		if player_guess in enemy_boat_location:
+			player_board.board[letter][int(player_guess[1])] = 'O'
+		else:
+			player_board.board[letter][int(player_guess[1])] = 'X'
+		return player_board
 
 class Player:
-	def __init__(self, name, board = None):
+	def __init__(self, name=None, board = None, ship_location=None):
 		self.name = name
+		self.ship_location = ship_location
 		self.board = Gameboard()
 
+	def switch_current_player(self, player=None):
+		if player == None or player == 'player two':
+			return 'player one'
+		return 'player two'
+
+	def enemy_player(self, current_player):
+		if current_player == 'player one':
+			return 'player two'
+		return 'player one'
+
 class Ship:
-	def __init__(self, length, starting_point, position):
-		self.length = length
-		self.starting_point = starting_point
-		self.position = position
+	def __init__(self):
+		pass
+
+	def create_ship_location(self, length, starting_point, position):
+		letter = ord(starting_point[0])
+		ship_location = []
+		for i in range(length):
+			new_letter = chr(letter + i)
+			if position == '1': #vertical
+				ship_location.append(new_letter + starting_point[1])
+			elif position == '2': #horizontal
+				ship_location.append(starting_point[0] + str(int(starting_point[1]) + i - 1))
+		return ship_location
