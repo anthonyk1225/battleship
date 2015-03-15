@@ -38,9 +38,6 @@ class Gameboard:
 			player_board.board[letter][int(player_guess[1:3])] = ' X'
 		return player_board
 
-	def update_enemy_list(self):
-		pass
-
 class Player:
 	def __init__(self, name=None, board = None, ship_location=None):
 		self.name = name
@@ -67,7 +64,14 @@ class Ship:
 		for i in range(length):
 			new_letter = chr(letter + i)
 			if position == '1': #vertical
-				ship_location.append(new_letter + starting_point[1])
+				ship_location.append(new_letter + starting_point[1:3])
 			elif position == '2': #horizontal
-				ship_location.append(starting_point[0] + str(int(starting_point[1]) + i))
+				ship_location.append(starting_point[0] + str(int(starting_point[1:3]) + i))
 		return ship_location
+
+	def update_enemy_boat(self,player_guess,enemy_boat_location):
+		if player_guess in enemy_boat_location:
+			destroyed = enemy_boat_location.index(player_guess)
+			enemy_boat_location.pop(destroyed)
+			return enemy_boat_location
+		return enemy_boat_location

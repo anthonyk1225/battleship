@@ -6,6 +6,7 @@ class Battleship:
 		self.view = View()
 		self.board = Gameboard()
 		self.player = Player()
+		self.ship = Ship()
 		self.view.welcome()
 
 	def two_player_game(self):
@@ -57,6 +58,9 @@ class Battleship:
 		actual_current_player.board.print_board()
 		shot_fired_at = self.view.fire_shot(actual_current_player.name).upper()
 		actual_current_player.board = self.board.updated_board(shot_fired_at, actual_current_player.board, actual_enemy_player.ship_location)
+		actual_enemy_player.ship_location = self.ship.update_enemy_boat(shot_fired_at,actual_enemy_player.ship_location)
+		if len(actual_enemy_player.ship_location) == 0:
+			return self.view.end_game(actual_current_player.name)
 		self.shots_fired(current_player)
 
 

@@ -39,3 +39,6 @@ class View:
 		Please select a coordinate to shoot
 		Selection: ''')
 		return shoot
+
+	def end_game(self,winning_player):
+		print('''Congratulations, ''' + winning_player + '''. You win!!!''')
