@@ -2,6 +2,13 @@ class View:
 	def __init__(self):
 		pass
 
+	def game_mode(self):
+		game_type = input('''What game mode would you like to play?
+		press 1 for 2 player mode
+		press 2 to test your wits against the computer!
+		Selection: ''')
+		return game_type
+
 	def welcome(self):
 		print ("Welcome to Battleship!!!!!  Hope you brought a life-jacket?")
 
@@ -40,5 +47,14 @@ class View:
 		Selection: ''')
 		return shoot
 
+	def its_a_hit(self):
+		print ("That's a hit!!")
+
+	def its_a_miss(self):
+		print("You've missed the enemy ship..")
+
 	def end_game(self,winning_player):
 		print('''Congratulations, ''' + winning_player + '''. You win!!!''')
+
+	def clear_screen(self):
+		print(chr(27) + "[2J")

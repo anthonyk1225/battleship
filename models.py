@@ -27,8 +27,9 @@ class Gameboard:
 			print (('  ').join(line))
 			print()
 
-	def hit_or_miss(self):
-		pass
+	def hit_or_miss(self, player_guess, enemy_boat_location):
+		if player_guess in enemy_boat_location:
+			return True
 
 	def updated_board(self, player_guess, player_board, enemy_boat_location):
 		letter = int(ord(player_guess[0])) - 64
@@ -53,6 +54,7 @@ class Player:
 		if current_player == 'player one':
 			return 'player two'
 		return 'player one'
+		
 
 class Ship:
 	def __init__(self):

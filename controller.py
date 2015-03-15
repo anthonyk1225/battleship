@@ -1,5 +1,6 @@
 from models import *
 from views import *
+import time
 
 class Battleship:
 	def __init__(self):
@@ -8,6 +9,17 @@ class Battleship:
 		self.player = Player()
 		self.ship = Ship()
 		self.view.welcome()
+
+	def main_menu(self):
+		choice = self.view.game_mode()
+		if choice is '1':
+			self.two_player_game()
+		elif choice is '2':
+			self.one_player_game()
+
+	def one_player_game(self):
+		self.player_one_initiate()
+		#computer initialization
 
 	def two_player_game(self):
 		self.player_one_initiate()
@@ -45,6 +57,7 @@ class Battleship:
 		self.player_two.ship_location = self.player_two_ship.create_ship_location(player_two_ship, player_two_position, player_two_starting_pointer)
 
 	def shots_fired(self, player = None):
+		self.view.clear_screen()
 		current_player = self.player.switch_current_player(player)
 		enemy_player = self.player.enemy_player(current_player)
 		if current_player == 'player one':
@@ -57,12 +70,21 @@ class Battleship:
 			actual_enemy_player = self.player_two
 		actual_current_player.board.print_board()
 		shot_fired_at = self.view.fire_shot(actual_current_player.name).upper()
+		a_hit = self.board.hit_or_miss(shot_fired_at, actual_enemy_player.ship_location)
 		actual_current_player.board = self.board.updated_board(shot_fired_at, actual_current_player.board, actual_enemy_player.ship_location)
 		actual_enemy_player.ship_location = self.ship.update_enemy_boat(shot_fired_at,actual_enemy_player.ship_location)
+		if a_hit is True:
+			self.view.its_a_hit()
+		else:
+			self.view.its_a_miss()
+		time.sleep(1)
 		if len(actual_enemy_player.ship_location) == 0:
 			return self.view.end_game(actual_current_player.name)
 		self.shots_fired(current_player)
 
+	def man_v_comp(self):
+		self.view.clear_screen()
+
 
 battleship = Battleship()
-battleship.two_player_game()
+battleship.main_menu()
