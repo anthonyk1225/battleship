@@ -23,19 +23,23 @@ class Gameboard:
 		return self.board
 
 	def print_board(self):
-		# self.board[3][7] = ' X'
-		# self.board[3][2] = ' O'
 		for line in self.board:
 			print (('  ').join(line))
 			print()
 
+	def hit_or_miss(self):
+		pass
+
 	def updated_board(self, player_guess, player_board, enemy_boat_location):
 		letter = int(ord(player_guess[0])) - 64
 		if player_guess in enemy_boat_location:
-			player_board.board[letter][int(player_guess[1])] = 'O'
+			player_board.board[letter][int(player_guess[1:3])] = ' O'
 		else:
-			player_board.board[letter][int(player_guess[1])] = 'X'
+			player_board.board[letter][int(player_guess[1:3])] = ' X'
 		return player_board
+
+	def update_enemy_list(self):
+		pass
 
 class Player:
 	def __init__(self, name=None, board = None, ship_location=None):
@@ -57,7 +61,7 @@ class Ship:
 	def __init__(self):
 		pass
 
-	def create_ship_location(self, length, starting_point, position):
+	def create_ship_location(self, length, position, starting_point,):
 		letter = ord(starting_point[0])
 		ship_location = []
 		for i in range(length):
@@ -65,5 +69,5 @@ class Ship:
 			if position == '1': #vertical
 				ship_location.append(new_letter + starting_point[1])
 			elif position == '2': #horizontal
-				ship_location.append(starting_point[0] + str(int(starting_point[1]) + i - 1))
+				ship_location.append(starting_point[0] + str(int(starting_point[1]) + i))
 		return ship_location

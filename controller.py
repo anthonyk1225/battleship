@@ -43,22 +43,21 @@ class Battleship:
 		self.player_two_ship = Ship() #setting player two's ship
 		self.player_two.ship_location = self.player_two_ship.create_ship_location(player_two_ship, player_two_position, player_two_starting_pointer)
 
-
 	def shots_fired(self, player = None):
-		current_player = self.player.switch_current_player()
+		current_player = self.player.switch_current_player(player)
 		enemy_player = self.player.enemy_player(current_player)
 		if current_player == 'player one':
-			current_player = self.player_one
+			actual_current_player = self.player_one
 		else:
-			current_player = self.player_two
+			actual_current_player = self.player_two
 		if enemy_player == 'player one':
-			enemy_player = self.player_one
+			actual_enemy_player = self.player_one
 		else:
-			enemy_player = self.player_two
-		shot_fired_at = self.view.fire_shot(current_player.name)
-		current_player.board = self.board.updated_board(shot_fired_at, current_player.board, (enemy_player.ship_location))
-
-
+			actual_enemy_player = self.player_two
+		actual_current_player.board.print_board()
+		shot_fired_at = self.view.fire_shot(actual_current_player.name).upper()
+		actual_current_player.board = self.board.updated_board(shot_fired_at, actual_current_player.board, actual_enemy_player.ship_location)
+		self.shots_fired(current_player)
 
 
 battleship = Battleship()
