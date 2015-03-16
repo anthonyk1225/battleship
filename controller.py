@@ -35,7 +35,6 @@ class Battleship:
 		self.hal_ship = Ship()
 		self.hal.ship_location = self.hal_ship.create_ship_location(random.randint(2,5), str(random.randint(1,2)), str(chr(random.randint(65,74))) + str(random.randint(1,10)))
 
-
 	def player_one_initiate(self):
 		player_one_name = self.view.first_player() #player 1 name
 		self.player_one = Player(player_one_name) #instance of class Player
@@ -93,6 +92,7 @@ class Battleship:
 		self.shots_fired(current_player)
 
 	def man_v_comp(self):
+		print(self.hal.ship_location)
 		self.player_one.board.print_board()
 		shot_fired_at = self.view.fire_shot(self.player_one.name).upper()
 		self.player_one.board = self.board.updated_board(shot_fired_at, self.player_one.board, self.hal.ship_location)
@@ -101,10 +101,10 @@ class Battleship:
 			self.view.its_a_hit()
 		else:
 			self.view.its_a_miss()
+		self.hal.ship_location = self.ship.update_enemy_boat(shot_fired_at, self.hal.ship_location)
 		if len(self.hal.ship_location) == 0:
 			return self.view.end_game(self.player_one.name)
 		self.view.hal_is_choosing()
-		self.hal.ship_location = self.ship.update_enemy_boat(shot_fired_at, self.hal.ship_location)
 		time.sleep(2)
 		self.hals_turn()
 
@@ -113,13 +113,15 @@ class Battleship:
 		self.hal.board = self.board.updated_board(hal_chooses, self.hal.board, self.player_one.ship_location)
 		a_hit = self.board.hit_or_miss(hal_chooses, self.player_one.ship_location)
 		if a_hit is True:
-			self.view.its_a_hit()
+			self.hal.hit.append(hal_chooses)
 		else:
-			self.view.its_a_miss()
+			self.hal.miss.append(hal_chooses)
 		self.player_one.ship_location = self.ship.update_enemy_boat(hal_chooses, self.player_one.ship_location)
+		print (self.hal.hit)
+		print(self.hal.miss)
 		if len(self.player_one.ship_location) == 0:
 			return self.view.end_game(self.hal.name)
-		print ("This is hal's board")
+		self.view.hals_board()
 		self.hal.board.print_board()
 		self.man_v_comp()
 

@@ -61,3 +61,6 @@ class View:
 
 	def hal_is_choosing(self):
 		print("Please wait while Hal searches for your ship...")
+
+	def hals_board(self):
+		print ("This is hal's board")

@@ -45,6 +45,8 @@ class Player:
 		self.name = name
 		self.ship_location = ship_location
 		self.board = Gameboard()
+		self.hit = []
+		self.miss = []
 
 	def switch_current_player(self, player=None):
 		if player == None or player == 'player two':
@@ -57,8 +59,27 @@ class Player:
 		return 'player one'
 
 	def hals_next_guess(self, hals_board):
-		y_coord = random.randint(65,74)
-		x_coord = random.randint(1,10)
+		indexing = random.randint(0,2)
+		indexing_two = random.randint(0,2)
+		if len(self.hit) > 0:
+			coordinates = random.choice(self.hit)
+			y_coord = [(ord(coordinates[0])+1), (ord(coordinates[0])-1), (ord(coordinates[0]))]
+			x_coord = [(int(coordinates[1])+1), (int(coordinates[1])-1), (int(coordinates[1]))]
+			y_coord = y_coord[indexing]
+			x_coord = x_coord[indexing_two]
+			while chr(y_coord) + str(x_coord) in self.miss or chr(y_coord) + str(x_coord) in self.hit:
+				indexing = random.randint(0,2)
+				indexing_two = random.randint(0,2)
+				y_coord = (ord(coordinates[0])+1), (ord(coordinates[0])-1), (ord(coordinates[0]))
+				x_coord = (int(coordinates[1])+1), (int(coordinates[1])-1), (int(coordinates[1]))
+				y_coord = y_coord[indexing]
+				x_coord = x_coord[indexing_two]
+		else:
+			y_coord = random.randint(65,74)
+			x_coord = random.randint(1,10)
+			while chr(y_coord) + str(x_coord) in self.miss:
+				y_coord = random.randint(65,74)
+				x_coord = random.randint(1,10)
 		return chr(y_coord) + str(x_coord)
 
 class Ship:
