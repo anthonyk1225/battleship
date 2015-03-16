@@ -58,3 +58,6 @@ class View:
 
 	def clear_screen(self):
 		print(chr(27) + "[2J")
+
+	def hal_is_choosing(self):
+		print("Please wait while Hal searches for your ship...")

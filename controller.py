@@ -29,8 +29,9 @@ class Battleship:
 		self.shots_fired()
 
 	def create_hal(self):
-		self.hal = Hal()
+		self.hal = Player('Hal')
 
+		self.hal.board.seed_board()
 		self.hal_ship = Ship()
 		self.hal.ship_location = self.hal_ship.create_ship_location(random.randint(2,5), str(random.randint(1,2)), str(chr(random.randint(65,74))) + str(random.randint(1,10)))
 
@@ -92,9 +93,35 @@ class Battleship:
 		self.shots_fired(current_player)
 
 	def man_v_comp(self):
-		self.view.clear_screen()
-		
-		print(self.hal.name, self.hal.ship_location)
+		self.player_one.board.print_board()
+		shot_fired_at = self.view.fire_shot(self.player_one.name).upper()
+		self.player_one.board = self.board.updated_board(shot_fired_at, self.player_one.board, self.hal.ship_location)
+		a_hit = self.board.hit_or_miss(shot_fired_at, self.hal.ship_location)
+		if a_hit is True:
+			self.view.its_a_hit()
+		else:
+			self.view.its_a_miss()
+		if len(self.hal.ship_location) == 0:
+			return self.view.end_game(self.player_one.name)
+		self.view.hal_is_choosing()
+		self.hal.ship_location = self.ship.update_enemy_boat(shot_fired_at, self.hal.ship_location)
+		time.sleep(2)
+		self.hals_turn()
+
+	def hals_turn(self):
+		hal_chooses = self.hal.hals_next_guess(self.hal.board)
+		self.hal.board = self.board.updated_board(hal_chooses, self.hal.board, self.player_one.ship_location)
+		a_hit = self.board.hit_or_miss(hal_chooses, self.player_one.ship_location)
+		if a_hit is True:
+			self.view.its_a_hit()
+		else:
+			self.view.its_a_miss()
+		self.player_one.ship_location = self.ship.update_enemy_boat(hal_chooses, self.player_one.ship_location)
+		if len(self.player_one.ship_location) == 0:
+			return self.view.end_game(self.hal.name)
+		print ("This is hal's board")
+		self.hal.board.print_board()
+		self.man_v_comp()
 
 
 battleship = Battleship()

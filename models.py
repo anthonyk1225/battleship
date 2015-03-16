@@ -1,4 +1,5 @@
 import sqlite3
+import random
 
 class Gameboard:
 	def __init__(self):
@@ -55,10 +56,10 @@ class Player:
 			return 'player two'
 		return 'player one'
 
-class Hal:
-	def _init__(self, name, board = None, ship_location = None):
-		self.name = 'Hal'
-		self.board = Gameboard().seed_board()
+	def hals_next_guess(self, hals_board):
+		y_coord = random.randint(65,74)
+		x_coord = random.randint(1,10)
+		return chr(y_coord) + str(x_coord)
 
 class Ship:
 	def __init__(self):
