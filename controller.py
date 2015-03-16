@@ -1,6 +1,7 @@
 from models import *
 from views import *
 import time
+import random
 
 class Battleship:
 	def __init__(self):
@@ -19,12 +20,20 @@ class Battleship:
 
 	def one_player_game(self):
 		self.player_one_initiate()
-		#computer initialization
+		self.create_hal()
+		self.man_v_comp()
 
 	def two_player_game(self):
 		self.player_one_initiate()
 		self.player_two_initiate()
 		self.shots_fired()
+
+	def create_hal(self):
+		self.hal = Hal()
+
+		self.hal_ship = Ship()
+		self.hal.ship_location = self.hal_ship.create_ship_location(random.randint(2,5), str(random.randint(1,2)), str(chr(random.randint(65,74))) + str(random.randint(1,10)))
+
 
 	def player_one_initiate(self):
 		player_one_name = self.view.first_player() #player 1 name
@@ -84,6 +93,8 @@ class Battleship:
 
 	def man_v_comp(self):
 		self.view.clear_screen()
+		
+		print(self.hal.name, self.hal.ship_location)
 
 
 battleship = Battleship()

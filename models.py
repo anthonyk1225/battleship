@@ -54,7 +54,11 @@ class Player:
 		if current_player == 'player one':
 			return 'player two'
 		return 'player one'
-		
+
+class Hal:
+	def _init__(self, name, board = None, ship_location = None):
+		self.name = 'Hal'
+		self.board = Gameboard().seed_board()
 
 class Ship:
 	def __init__(self):
